@@ -1,0 +1,33 @@
+- name: Add Modules for Containerd
+  blockinfile:
+    path: "/etc/modules-load.d/containerd.conf"
+    create: true
+    block: |
+      overlay
+      br_netfilter
+
+- name: Load Modules for Containerd
+  modprobe:
+    name: 
+    state: present
+  with_items:
+    - overlay
+    - br_netfilter
+
+- name: Add Sysctl Options for Containerd
+  blockinfile:
+    path: "/etc/sysctl.d/99-kubernetes-cri.conf"
+    create: true
+    block: |
+      net.bridge.bridge-nf-call-iptables = 1
+      net.ipv4.ip_forward = 1
+      net.bridge.bridge-nf-call-ip6tables = 1
+
+- name: Apply New Sysctl Options
+  command: sysctl --system
+
+- name: Start & Enable Containerd
+  service: name=containerd state=restarted enabled=yes
+
+- name: Start & Enable Kubelet
+  service: name=kubelet state=restarted enabled=yes

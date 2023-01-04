@@ -1,0 +1,16 @@
+- name: Set cluster name
+  command: "/opt/flight/bin/flight config set cluster.name {{ cluster_name }}"
+
+- name: Locate flight-env directory
+  shell: "rpm -ql flight-env |grep 'bin/flenv' |sed 's,/bin/flenv,,g'"
+  register: env_dir
+
+- name: Create apps directory
+  file:
+    path: /opt/apps
+    state: directory
+    owner: root
+
+- name: Configure global software environment location
+  template: src=config.yml dest={{ env_dir['stdout'] }}/etc/config.yml
+

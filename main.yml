@@ -1,0 +1,9 @@
+- name: Configure Multi Node Research Environment
+  hosts: all
+  remote_user: root
+  gather_facts: True
+  roles:
+    - role: hunter
+      when: hunter_hosts |bool
+    - k8s
+    - flightenv

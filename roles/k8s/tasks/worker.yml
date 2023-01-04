@@ -1,0 +1,16 @@
+- name: Obtain Join Command 
+  copy:
+    src: "files/{{ cluster_name }}_kubernetes_join_command.sh"
+    dest: /tmp/kubernetes_join_command.sh
+    mode: 0700
+  tags:
+    - update
+
+- name: Join the Worker Node to the cluster.
+  command: bash /tmp/kubernetes_join_command
+
+- name: Tidy Up
+  file:
+    path: /tmp/kubernetes_join_command.sh
+    state: absent
+

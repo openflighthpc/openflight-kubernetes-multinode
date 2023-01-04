@@ -1,0 +1,58 @@
+- name: Initialize the Cluster
+  shell: "kubeadm init --pod-network-cidr={{ compute_ip_range }}"
+
+- name: Create .kube Directory for User
+  become: yes
+  become_user: "{{ default_username }}"
+  file:
+    path: $HOME/.kube
+    state: directory
+    mode: 0755
+
+- name: Add Kubernetes Config for User
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: "/home/{{ default_username }}/.kube/config"
+    remote_src: yes
+    owner: "{{ default_username }}"
+
+- name: Create Pod Network Config
+  copy:
+    src: files/calico.yaml
+    dest: /tmp/calico.yaml
+
+- name: Install Pod Network (USE LOCAL CALICO.YAML SOMEHOW)
+  become: yes
+  become_user: "{{ default_username }}"
+  shell: kubectl apply -f /tmp/calico.yaml
+  args:
+    chdir: $HOME
+
+- name: Tidy Up
+  file:
+    path: /tmp/calico.yaml
+    state: absent
+
+- name: Check for Local Join Command
+  stat:
+    path: "files/{{ cluster_name }}_kubernetes_join_command.sh"
+  register: join_cmd_exists
+  delegate_to: localhost
+  run_once: true
+
+- name: Get the Local Join Command
+  become: yes
+  become_user: "{{ default_username }}"
+  shell: kubeadm token create  --print-join-command
+  register: kubernetes_join_command
+  run_once: true
+  delegate_to: localhost
+  when: not join_cmd_exists.stat.exists
+
+- name: Write Local Join Command
+  copy:
+    content: "{{ kubernetes_join_command.stdout }}"
+    dest: "files/{{ cluster_name }}_kubernetes_join_command.sh"
+  run_once: true
+  delegate_to: localhost
+  when: not join_cmd_exists.stat.exists
