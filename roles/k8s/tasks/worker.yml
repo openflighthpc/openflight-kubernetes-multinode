@@ -7,7 +7,7 @@
     - update
 
 - name: Join the Worker Node to the cluster.
-  command: bash /tmp/kubernetes_join_command
+  command: bash /tmp/kubernetes_join_command.sh
 
 - name: Tidy Up
   file:
