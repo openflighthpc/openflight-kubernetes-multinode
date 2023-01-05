@@ -4,7 +4,6 @@
   delegate_to: localhost
   tags:
     - pre
-    - update
 
 - name: Process hunter nodes
   set_fact:
@@ -13,7 +12,6 @@
   delegate_to: localhost
   tags:
     - pre
-    - update
 
 - name: Add hunter nodes to /etc/hosts
   blockinfile:
@@ -25,7 +23,6 @@
       {% endfor %}
   tags:
     - pre
-    - update
 
 - name: Collect hunter mac addresses
   shell: "{% for item in hunter_nodes %} sudo -i /opt/flight/bin/flight hunter show {{ item.label }} |grep '{{ item.ip }}' -B 2  |grep ':mac:' |sed 's/.*:mac: //g' ;{%endfor %}"
@@ -33,7 +30,6 @@
   delegate_to: localhost
   tags:
     - pre
-    - update
 
 - name: Add hunter node mac addresses to firewall
   firewalld:
@@ -45,7 +41,6 @@
   loop: "{{ hunter_macs.stdout_lines }}"
   tags:
     - pre
-    - update
 
 - name: Set hunter label in prompt 
   blockinfile:
@@ -60,6 +55,3 @@
       {% endif %}
       {% endfor %}
       fi
-  tags:
-    - update
-
