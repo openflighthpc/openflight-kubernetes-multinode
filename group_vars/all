@@ -1,16 +1,60 @@
 # General
 cluster_name: mycluster
 
+## The hostname of the NFS server
+nfs_server: ""
+
 # Shared User
 default_username: flight
+default_user_password: '0penfl1ght'
 
 # FlightEnv Settings 
+
+## The hostname or IP address for accessing Web Suite and VNC sessions on
+access_host: ""
+
+## If True this will attempt to generate a Let's Encrypt certificate for Web Suite
+## and fall back to a self-signed one if the Let's Encrypt service cannot reach
+## the provided access_host address
+generate_certs: true
 
 ## If true this will generate host entries and add firewall rules from the information
 ## stored in flight-hunter such that hunter labels will resolve to the correct hosts
 ## and be trusted by all hosts in the playbook
 hunter_hosts: true
 
-# IP range for Kubernetes Pod
+# IP range for Kubernetes Nodes & NFS Shares
 compute_ip_range: "10.10.0.0/16"
 
+# NFS Settings
+nfs_shares:
+  apps:
+    server: "{{ nfs_server }}"
+    export: "/export//apps"
+    mountpoint: /opt/apps
+    export_opts: "{{ compute_ip_range }}(rw,no_root_squash,sync)"
+    mount_opts: intr,rsize=32768,wsize=32768,vers=3,_netdev,nofail
+  data:
+    server: "{{ nfs_server }}"
+    export: "/export/data"
+    mountpoint: /opt/data
+    export_opts: "{{ compute_ip_range }}(rw,no_root_squash,sync)"
+    mount_opts: intr,rsize=32768,wsize=32768,vers=3,_netdev,nofail
+  service:
+    server: "{{ nfs_server }}"
+    export: "/export/service"
+    mountpoint: /opt/service
+    export_opts: "{{ compute_ip_range }}(rw,no_root_squash,sync)"
+    mount_opts: intr,rsize=32768,wsize=32768,vers=3,_netdev,nofail
+  site:
+    server: "{{ nfs_server }}"
+    export: "/export/site"
+    mountpoint: /opt/site
+    export_opts: "{{ compute_ip_range }}(rw,no_root_squash,sync)"
+    mount_opts: intr,rsize=32768,wsize=32768,vers=3,_netdev,nofail
+  home:
+    server: "{{ nfs_server }}"
+    export: /home
+    mountpoint: /home
+    export_opts: "{{ compute_ip_range }}(rw,no_root_squash,sync)"
+    mount_opts: intr,rsize=32768,wsize=32768,vers=3,_netdev,nofail
