@@ -5,16 +5,17 @@
   become: yes
   become_user: "{{ default_username }}"
   file:
-    path: $HOME/.kube
+    path: "~{{ default_username }}/.kube"
     state: directory
     mode: 0755
 
 - name: Add Kubernetes Config for User
   copy:
     src: /etc/kubernetes/admin.conf
-    dest: "/home/{{ default_username }}/.kube/config"
+    dest: "~{{ default_username }}/.kube/config"
     remote_src: yes
     owner: "{{ default_username }}"
+    group: "{{ default_username }}"
 
 - name: Create Pod Network Config
   copy:
