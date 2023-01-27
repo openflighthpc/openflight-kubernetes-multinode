@@ -1,5 +1,5 @@
 - name: Initialize the Cluster
-  shell: "kubeadm init"
+  shell: "kubeadm init --pod-network-cidr=192.168.0.0/16"
 
 - name: Create .kube Directory for User
   become: yes
