@@ -14,3 +14,10 @@
     path: /tmp/kubernetes_join_command.sh
     state: absent
 
+- name: Trust Tunnel Interface Traffic
+  firewalld:
+    zone: trusted
+    source: tunl0
+    state: enabled
+    permanent: yes
+    immediate: yes
