@@ -23,6 +23,9 @@ generate_certs: true
 ## and be trusted by all hosts in the playbook
 hunter_hosts: true
 
+# IP range for Kubernetes Pods
+pod_ip_range: "192.168.0.0/16"
+
 # IP range for Kubernetes Nodes & NFS Shares
 compute_ip_range: "10.10.0.0/16"
 

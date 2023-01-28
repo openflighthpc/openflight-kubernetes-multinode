@@ -1,5 +1,5 @@
 - name: Initialize the Cluster
-  shell: "kubeadm init --pod-network-cidr=192.168.0.0/16"
+  shell: "kubeadm init --pod-network-cidr={{ pod_ip_range }}"
 
 - name: Create .kube Directory for User
   become: yes
@@ -18,7 +18,7 @@
     group: "{{ default_username }}"
 
 - name: Create Pod Network Config
-  copy:
+  template:
     src: files/calico.yaml
     dest: /tmp/calico.yaml
 
