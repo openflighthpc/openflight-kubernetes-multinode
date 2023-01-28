@@ -29,6 +29,9 @@
 - name: Start & Enable Containerd
   service: name=containerd state=restarted enabled=yes
 
+- name: Start & Enable Kubelet
+  service: name=kubelet state=restarted enabled=yes
+
 - name: Trust Tunnel Interface Traffic
   firewalld:
     zone: trusted
@@ -36,6 +39,3 @@
     state: enabled
     permanent: yes
     immediate: yes
-
-- name: Start & Enable Kubelet
-  service: name=kubelet state=restarted enabled=yes
