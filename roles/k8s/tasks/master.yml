@@ -61,7 +61,7 @@
 - name: Trust Tunnel Interface Traffic
   firewalld:
     zone: trusted
-    source: tunl0
+    interface: tunl0
     state: enabled
     permanent: yes
     immediate: yes
