@@ -1,6 +1,12 @@
 - name: Start Flight WWW
   command: "/opt/flight/bin/flight service restart www"
 
+- name: Disable Unused Web-Suite Applications
+  command: mv /opt/flight/opt/www/landing-page/default/content/apps/job-script.md /opt/flight/opt/www/landing-page/default/content/apps/job-script.md.disabled
+  args:
+    creates: /opt/flight/opt/www/landing-page/default/content/apps/job-script.md.disabled
+    removes: /opt/flight/opt/www/landing-page/default/content/apps/job-script.md
+
 - name: Generate Let's Encrypt certificate
   command: "/opt/flight/bin/flight www cert-gen --cert-type lets-encrypt --domain {{ access_host }} --email certs@openflighthpc.org"
   register: letsencryptout
