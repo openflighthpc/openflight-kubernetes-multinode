@@ -3,8 +3,8 @@
 
 - name: Perform Master Configuration
   import_tasks: master.yml
-  when: "'login' in group_names"
+  when: "'master' in group_names"
 
 - name: Perform Worker Configuration
   import_tasks: worker.yml
-  when: "'compute' in group_names"
+  when: "'worker' in group_names"

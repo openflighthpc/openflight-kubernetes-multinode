@@ -6,4 +6,8 @@
     - role: hunter
       when: hunter_hosts |bool
     - k8s
+    - nfs
     - flightenv
+    - role: flightweb
+      when: "'master' in group_names"
+    - user

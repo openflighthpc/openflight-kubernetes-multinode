@@ -23,10 +23,10 @@ This playbook _configures_ the services within it, it does not perform any insta
     - `hunter_hosts`: When set to true - this will make appropriate changes to `/etc/hosts` and system firewalls to trust hosts in [flight-hunter](https://github.com/openflighthpc/flight-hunter)
 - Create ansible inventory file (e.g. `mycluster.inv`) that looks like the following
   ```shell
-  [login]
+  [master]
   chead1
 
-  [compute]
+  [worker]
   cnode01
   cnode02
   ```

@@ -1,0 +1,11 @@
+- name: NFS Server Configuration
+  import_tasks: server.yml
+  when: "'master' in group_names"
+
+- name: NFS Client Configuration
+  import_tasks: client.yml
+  when: "'worker' in group_names" 
+
+- name: NFS Generic Configuration
+  import_tasks: generic.yml
+
