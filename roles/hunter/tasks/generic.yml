@@ -38,6 +38,10 @@
     state: enabled
     permanent: yes
   loop: "{{ hunter_macs.stdout_lines }}"
+  register: output
+  retries: 10
+  delay: 1
+  until: output is not failed
   tags:
     - pre
 
