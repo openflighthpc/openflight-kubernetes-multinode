@@ -8,6 +8,10 @@
 
 - name: Join the Worker Node to the cluster.
   command: bash /tmp/kubernetes_join_command.sh
+  register: output
+  retries: 5
+  delay: 30
+  until: output.rc == 0
 
 - name: Tidy Up
   file:
