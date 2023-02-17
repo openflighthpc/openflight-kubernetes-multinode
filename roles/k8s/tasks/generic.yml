@@ -26,6 +26,9 @@
 - name: Apply New Sysctl Options
   command: sysctl --system
 
+- name: Clean Kubernete Environment
+  shell: "kubeadm reset -f"
+
 - name: Start & Enable Containerd
   service: name=containerd state=restarted enabled=yes
 

@@ -34,29 +34,18 @@
     path: /tmp/calico.yaml
     state: absent
 
-- name: Check for Local Join Command
-  stat:
-    path: "files/{{ cluster_name }}_kubernetes_join_command.sh"
-  register: join_cmd_exists
-  delegate_to: localhost
-  run_once: true
-
 - name: Get the Local Join Command
   become: yes
   become_user: "{{ default_username }}"
-  shell: kubeadm token create  --print-join-command
+  shell: kubeadm token create --print-join-command --ttl 0
   register: kubernetes_join_command
   run_once: true
-  delegate_to: localhost
-  when: not join_cmd_exists.stat.exists
 
 - name: Write Local Join Command
-  copy:
-    content: "{{ kubernetes_join_command.stdout }}"
+  template:
+    src: files/kubernetes_join_command.sh
     dest: "files/{{ cluster_name }}_kubernetes_join_command.sh"
   run_once: true
-  delegate_to: localhost
-  when: not join_cmd_exists.stat.exists
 
 - name: Trust Tunnel Interface Traffic
   firewalld:
