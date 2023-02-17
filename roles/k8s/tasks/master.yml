@@ -46,6 +46,7 @@
     src: files/kubernetes_join_command.sh
     dest: "files/{{ cluster_name }}_kubernetes_join_command.sh"
   run_once: true
+  delegate_to: localhost
 
 - name: Trust Tunnel Interface Traffic
   firewalld:
