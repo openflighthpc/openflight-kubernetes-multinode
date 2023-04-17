@@ -1,0 +1,6 @@
+- name: Remove Node from Multi Node Research Environment
+  hosts: all
+  remote_user: root
+  gather_facts: True
+  roles:
+    - remove
