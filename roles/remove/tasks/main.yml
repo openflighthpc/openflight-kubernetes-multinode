@@ -1,0 +1,11 @@
+- name: K8s Removal
+  import_tasks: k8s.yml
+  tags:
+    - never
+    - remove
+
+- name: Hunter Removal
+  import_tasks: hunter.yml
+  tags:
+    - never
+    - remove
