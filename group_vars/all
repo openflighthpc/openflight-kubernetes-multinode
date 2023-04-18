@@ -4,6 +4,9 @@ cluster_name: mycluster
 ## The hostname of the NFS server
 nfs_server: ""
 
+## Whether or not to do MAC-based firewall trusting
+mac_firewall: false
+
 # Shared User
 default_username: flight
 default_user_password: '0penfl1ght'
