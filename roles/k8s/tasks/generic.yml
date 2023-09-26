@@ -29,6 +29,13 @@
 - name: Clean Kubernete Environment
   shell: "kubeadm reset -f"
 
+- name: Enable Systemd CGroups for Containerd
+  replace:
+    path: /etc/containerd/config.toml
+    regexp: '(^.*SystemdCgroup).*'
+    replace: '\1 = true'
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '9'
+
 - name: Start & Enable Containerd
   service: name=containerd state=restarted enabled=yes
 
